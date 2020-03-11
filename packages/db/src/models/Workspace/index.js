@@ -1,5 +1,0 @@
-module.exports.findOneById = require('./findOneById')
-module.exports.findManyByUserId = require('./findManyByUserId')
-module.exports.createOneWithOwnerId = require('./createOneWithOwnerId')
-module.exports.removeOneById = require('./removeOneById')
-module.exports.addUserByIdAs = require('./addUserByIdAs')
