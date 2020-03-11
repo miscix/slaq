@@ -10,7 +10,9 @@ test.afterEach.always(hooks.down(knex))
 
 // test
 
-test('insert - duplicate email', async t => {
+test.todo('required fields')
+
+test('unique `email`', async t => {
   await t.throwsAsync(
     knex('users').insert({
       name: 'Exo',

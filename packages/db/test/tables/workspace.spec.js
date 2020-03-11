@@ -10,7 +10,9 @@ test.afterEach.always(hooks.down(knex))
 
 // test
 
-test('insert - duplicate uri', async t => {
+test.todo('required fields')
+
+test('unique `uri`', async t => {
   await t.throwsAsync(
     knex('workspaces').insert({
       name: 'Shared',
