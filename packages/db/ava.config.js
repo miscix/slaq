@@ -4,7 +4,7 @@ const files = [
 ]
 
 const ignoredByWatcher = [
-  'test/tmp/**'
+  'tmp/**'
 ]
 
 const environmentVariables = {

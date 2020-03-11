@@ -1,4 +1,4 @@
-const { users } = require('./snapshot.json')
+const { users } = require('../snapshot.json')
 
 exports.seed = async knex => {
   // Deletes ALL existing entries

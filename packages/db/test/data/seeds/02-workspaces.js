@@ -1,4 +1,4 @@
-const { workspaces } = require('./snapshot.json')
+const { workspaces } = require('../snapshot.json')
 
 exports.seed = async knex => {
   // Deletes ALL existing entries
