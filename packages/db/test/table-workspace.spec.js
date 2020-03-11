@@ -12,6 +12,8 @@ const knex = Knex(settingsMap.test)
 
 test.before(async t => {
   await knex.migrate.latest()
+  await knex.seed.run()
+
   t.context.table = knex('workspaces')
 })
 
@@ -21,23 +23,17 @@ test.after.always(async t => {
 
 // test
 
-test('insert', async t => {
+test('insert - duplicate', async t => {
   const { table } = t.context
 
   const workspace = {
-    name: 'Venus',
-    uri: 'venus'
+    name: 'Local',
+    uri: 'local'
   }
-
-  // assert normal input
-  await t.notThrowsAsync(table.insert(workspace))
 
   // assert duplicate entry
   await t.throwsAsync(table.insert(workspace))
     .then(err => {
       t.regex(err.message, /(.*)UNIQUE(.*)/, 'unique constraint')
     })
-
-  // assert nullable
-  await t.throwsAsync(table.insert({ name: 'Venus' }))
 })

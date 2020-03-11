@@ -12,6 +12,8 @@ const knex = Knex(settingsMap.test)
 
 test.before(async t => {
   await knex.migrate.latest()
+  await knex.seed.run()
+
   t.context.table = knex('users')
 })
 
@@ -21,7 +23,7 @@ test.after.always(async t => {
 
 // test
 
-test('insert', async t => {
+test('insert - duplicate', async t => {
   const { table } = t.context
 
   const user = {
@@ -30,15 +32,9 @@ test('insert', async t => {
     password: 'xxx'
   }
 
-  // assert normal input
-  await t.notThrowsAsync(table.insert(user))
-
   // assert duplicate entry
   await t.throwsAsync(table.insert(user))
     .then(err => {
       t.regex(err.message, /(.*)UNIQUE(.*)/, 'unique constraint')
     })
-
-  // assert nullable
-  await t.throwsAsync(table.insert({ name: 'Exo' }))
 })

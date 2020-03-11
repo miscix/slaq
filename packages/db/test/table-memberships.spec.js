@@ -12,6 +12,8 @@ const knex = Knex(settingsMap.test)
 
 test.before(async t => {
   await knex.migrate.latest()
+  await knex.seed.run()
+
   t.context.table = knex('memberships')
 })
 
@@ -21,7 +23,7 @@ test.after.always(async t => {
 
 // test
 
-test('insert - ok', async t => {
+test('insert - duplicate', async t => {
   const { table } = t.context
 
   const membership = {
@@ -30,5 +32,5 @@ test('insert - ok', async t => {
     workspace_id: 1
   }
 
-  await t.notThrowsAsync(table.insert(membership))
+  await t.throwsAsync(table.insert(membership))
 })
