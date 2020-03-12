@@ -11,7 +11,10 @@
     "lint": "eslint --fix index.js src/**/*.js",
     "lint:staged": "lint-staged",
     "precommit": "npm run lint:staged",
-    "prepush": "npm run lint && npm test"
+    "prepush": "npm run lint && npm test",
+    "db:migrate:latest": "knex migrate:latest",
+    "db:migrate:rollback": "knex migrate:rollback",
+    "db:seed:run": "knex seed:run"
   },
   "devDependencies": {
     "ava": "^3.2.0",

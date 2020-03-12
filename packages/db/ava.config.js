@@ -11,6 +11,8 @@ const environmentVariables = {
   NODE_ENV: 'test'
 }
 
+const serial = true
+
 const require = []
 
 const nodeArguments = []
@@ -21,6 +23,7 @@ export default {
   files,
   ignoredByWatcher,
   environmentVariables,
+  serial,
   require,
   nodeArguments,
   verbose
