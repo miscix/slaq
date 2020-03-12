@@ -1,11 +1,11 @@
 const Knex = require('knex')
 
-const settingsMap = require('../../knexfile')
+const config = require('../../config')
 
 //
 
-const ENV = 'test'
+const env = process.env.NODE_ENV || 'test'
 
 // init
 
-module.exports = Knex(settingsMap[ENV])
+module.exports = Knex(config[env])
