@@ -1,13 +1,13 @@
 const R = require('ramda')
 
-const getUser = require('./getUser')
+const { findOneFrom } = require('./helpers')
 
 /**
  *
  */
 
 function getUserByEmail (knex, email) {
-  return getUser(knex, { email })
+  return findOneFrom(knex, 'users', { email })
 }
 
 //

@@ -1,18 +1,13 @@
 const R = require('ramda')
 
-// helpers
-
-const stubVoid = () => void 0
+const { deleteOneFrom } = require('./helpers')
 
 /**
  *
  */
 
-function removeWorkspaceById (knex, workspaceId) {
-  return knex('workspaces')
-    .del()
-    .where({ id: workspaceId })
-    .then(stubVoid)
+function removeWorkspaceById (knex, id) {
+  return deleteOneFrom(knex, 'workspaces', { id })
 }
 
 //

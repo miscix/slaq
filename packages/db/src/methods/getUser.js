@@ -1,18 +1,13 @@
 const R = require('ramda')
 
-// helpers
-
-const getOneFrom = (knex, tableName, selector) =>
-  knex(tableName)
-    .where(selector)
-    .then(R.head) //
+const { findOneFrom } = require('./helpers')
 
 /**
  *
  */
 
 function getUser (knex, selector) {
-  return getOneFrom(knex, 'users', selector)
+  return findOneFrom(knex, 'users', selector)
 }
 
 //

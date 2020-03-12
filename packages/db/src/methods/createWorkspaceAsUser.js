@@ -1,29 +1,26 @@
 const R = require('ramda')
 
-const getWorkspaceById = require('./getWorkspaceById')
+const { insertOneInto } = require('./helpers')
 
 /**
  *
  */
 
 function createOneWithOwnerId (knex, userId, workspaceData) {
-  const setOwner = workspaceId => {
+  const setOwner = workspace => {
     const membership = {
       role: 'owner',
       user_id: userId,
-      workspace_id: workspaceId
+      workspace_id: workspace.id
     }
 
     return knex('memberships')
       .insert(membership)
-      .then(() => workspaceId)
+      .then(() => workspace)
   }
 
-  return knex('workspaces')
-    .insert(workspaceData)
-    .then(R.head)
+  return insertOneInto(knex, 'workspaces', workspaceData)
     .then(setOwner)
-    .then(getWorkspaceById(knex))
 }
 
 module.exports = R.curry(createOneWithOwnerId)

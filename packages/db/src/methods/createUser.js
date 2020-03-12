@@ -1,13 +1,6 @@
 const R = require('ramda')
 
-const getUserById = require('./getUserById')
-
-// helpers
-
-const insertOneInto = (knex, tableName, data) =>
-  knex(tableName)
-    .insert(data)
-    .then(R.head) //
+const { insertOneInto } = require('./helpers')
 
 /**
  *
@@ -15,7 +8,6 @@ const insertOneInto = (knex, tableName, data) =>
 
 function createUser (knex, userData) {
   return insertOneInto(knex, 'users', userData)
-    .then(getUserById(knex))
 }
 
 //

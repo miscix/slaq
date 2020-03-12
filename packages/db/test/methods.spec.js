@@ -47,14 +47,6 @@ test('createUser - ok', async t => {
     user,
     { id: user.id, ...userData }
   )
-
-  // assert effect
-
-  await knex('users')
-    .where({ id: user.id })
-    .then(res => {
-      t.deepEqual(res, [user])
-    })
 })
 
 test('createUser - conflict email', async t => {

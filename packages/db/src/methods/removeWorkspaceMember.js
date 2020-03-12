@@ -1,8 +1,8 @@
 const R = require('ramda')
 
-// helpers
+const { deleteOneFrom } = require('./helpers')
 
-const stubVoid = () => void 0
+// helpers
 
 /**
  *
@@ -15,10 +15,7 @@ function removeWorkspaceMember (knex, workspaceId, userId) {
     user_id: userId
   }
 
-  return knex('memberships')
-    .del()
-    .where(selector)
-    .then(stubVoid)
+  return deleteOneFrom(knex, 'memberships', selector)
 }
 
 //

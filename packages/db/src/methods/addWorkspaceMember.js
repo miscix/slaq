@@ -1,6 +1,6 @@
 const R = require('ramda')
 
-const stubVoid = () => void 0
+const { insertOneInto } = require('./helpers')
 
 function addWorkspaceMember (knex, workspaceId, userId) {
   const membership = {
@@ -9,9 +9,7 @@ function addWorkspaceMember (knex, workspaceId, userId) {
     workspace_id: workspaceId
   }
 
-  return knex('memberships')
-    .insert(membership)
-    .then(stubVoid)
+  return insertOneInto(knex, 'memberships', membership)
 }
 
 module.exports = R.curry(addWorkspaceMember)
