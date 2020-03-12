@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "knex": "^0.20.11",
+    "pkg-dir": "^4.2.0",
     "ramda": "^0.27.0",
     "sqlite3": "^4.1.1"
   }

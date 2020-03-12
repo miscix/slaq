@@ -1,5 +1,2 @@
-const identity = require('./src/identity')
-
-module.exports = {
-  identity
-}
+module.exports.config = require('./src/config')
+module.exports.methods = require('./src/methods')

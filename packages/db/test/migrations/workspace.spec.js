@@ -5,8 +5,8 @@ const hooks = require('../helpers/hooks')
 
 // hooks
 
-test.beforeEach(hooks.up(knex))
-test.afterEach.always(hooks.down(knex))
+test.beforeEach(hooks.up)
+test.afterEach.always(hooks.down)
 
 // test
 

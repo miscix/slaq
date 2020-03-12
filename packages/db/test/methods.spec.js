@@ -3,20 +3,19 @@ const { serial: test } = require('ava')
 const knex = require('./helpers/knex')
 const hooks = require('./helpers/hooks')
 
-const DATA = require('./data/snapshot.json')
-
-const Methods = require('../src/methods')
+const DATA = require('../assets/data')
+const METHODS = require('../src/methods')
 
 // hooks
 
 test.beforeEach(async t => {
-  await hooks.up(knex)()
+  await hooks.up()
 
   // partial application
   const methods = Object
-    .keys(Methods)
+    .keys(METHODS)
     .reduce((acc, key) => {
-      acc[key] = Methods[key](knex)
+      acc[key] = METHODS[key](knex)
       return acc
     }, {})
 
@@ -26,7 +25,7 @@ test.beforeEach(async t => {
   }
 })
 
-test.afterEach.always(hooks.down(knex))
+test.afterEach.always(hooks.down)
 
 // test
 
