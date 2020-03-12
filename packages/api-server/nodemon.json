@@ -1,0 +1,13 @@
+{
+  "restartable": "r",
+  "ignore": [
+    ".git",
+    "node_modules/**/node_modules",
+    "test/**"
+  ],
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "ext": "js,json"
+}
+
