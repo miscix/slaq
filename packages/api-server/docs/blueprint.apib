@@ -1,0 +1,327 @@
+FORMAT: 1A
+
+# bee/slaq
+
+> Slack-like workspaces.
+
+#### Content type
+
+Content type is set to `application/json` for all API calls.
+
+#### HTTP Methods
+
+- `GET`
+- `POST`
+- `PUT`
+- `PATCH`
+- `DELETE`
+
+#### HTTP Codes
+
+- `200` - OK status with JSON body
+- `201` - Created
+- `204` - OK status without body
+- `400` - Bad Request
+- `401` - Unauthorized
+- `403` - Forbidden
+- `404` - Not found
+- `409` - Conflict
+- `422` - Bad data
+- `500` - Internal Server Error
+- `503` - No database connection 
+
+#### Auth. mechanism
+
+[JSON Web Tokens](https://jwt.io/) will be used with `Bearer` mechanism to for
+client authorization and access control.
+
+Means all the requests to protected endpoints **MUST** include a proper header 
+or will fail with error 401 `Unauthorized`.
+
+*Example Header*
+
+```
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1MDdmMWY3N2JjZjg2Y2Q3OTk0MzkwMTEifQ.pXGND9MOBHSjeehQ2D8QipUsADgY0uPfxto6kNMH96k
+```
+
+# Group Tokens
+
+## Token [/tokens]
+
++ Attributes (object)
+    + `token`: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1MDdmMWY3N2JjZjg2Y2Q3OTk0MzkwMTEifQ.pXGND9MOBHSjeehQ2D8QipUsADgY0uPfxto6kNMH96k` (string, required)
+
+### Acquire a token [POST]
+
+Login.  
+*Not implemented*
+
++ Request
+    + Attributes (object)
+        + Include User Email
+        + Include User Password
+
++ Response 200 (application/json)
+    + Attributes (object)
+        + Include Token
+
+# Group Users
+
+## User [/users/{id}]
+
++ Parameters
+    + `id`: `eWRhpRV` (string, required)
+
+        The ID of the desired user.
+
++ Attributes (object)
+    + Include User Ref
+    + Include User Email
+    + Include User Details
+
+### Create a user [POST /users]
+
+Register
+
+*Not implemented*
+
++ Request
+    + Attributes (object)
+        + Include User Email
+        + Include User Password
+        + Include User Details
+
++ Response 201 (application/json)
+    + Attributes (User Ref)
+
++ Response 422 (application/json)
+    + Attributes (object)
+        + errors (object)
+            - email: `invalid email` (string, optional)
+
++ Response 409 (application/json)
+
+### Fetch user details [GET]
+
+*Not implemented*
+
++ Response 200 (application/json)
+    + Attributes (User)
+
++ Response 404
+
+### Check if user exists [HEAD]
+
+*Not implemented*
+
++ Response 200
+
++ Response 404
+
+### Update user details [PUT]
+
+*Not implemented*
+
++ Request
+    + Attributes (object)
+        - Include User Details
+
++ Response 204
+
+### Discover users [GET /users/{?limit}]
+
+*Not implemented*
+
++ Parameters
+    + `limit`: `20` (number, optional)
+
++ Response 200 (application/json)
+    + Attributes (object)
+        + `items` (array[User])   
+
++ Response 404
+
+# Group Workspaces
+
+## Workspace [/workspaces/{workspaceUri}]
+
++ Parameters
+    + `workspaceUri`: `school` (number, required)
+    
++ Attributes (object)
+    + Include Workspace Ref
+    + Include Workspace Details
+
+### Create a workspace [POST /workspaces]
+
+*Not implemented*
+
++ Request
+    + Attributes (Workspace)
+
++ Response 201 (application/json)
+    + Attributes (Workspace Ref)
+
++ Response 422 (application/json)
+
++ Response 409 (application/json)
+
+### Fetch workspace details [GET]
+
+*Not implemented*
+
++ Response 200 (application/json)
+    + Attributes (Workspace)
+
++ Response 404
+
+### Check if workspace exists [HEAD]
+
+*Not implemented*
+
++ Response 200
+
++ Response 404
+
+### Update workspace details [PATCH]
+
+*Not implemented*
+
++ Request
+    + Attributes (Workspace Details)
+
++ Response 204
+
++ Response 404
+
++ Response 422
+
+### Discover workspaces [GET /workspaces/{?limit}]
+
+*Not implemented*
+
++ Parameters
+    + limit: `20` (number, optional)
+
++ Response 200 (application/json)
+    + Attributes (object)
+        + `items` (array[Workspace])
+
+## Workspace Member [/workspaces/{workspaceUri}/members/{userId}]
+
++ Parameters
+    + `workspaceUri`: `school` (string, required)
+    + `userId`: `eWRhpRV` (string, required)
+        
++ Attributes (object)
+    + Include Workspace Ref
+    + Include User Ref
+    + Include User Details
+    + Include Membership Info
+
+### Add a member [POST /workspaces/{workspaceUri}/members/]
+
+Add user to workspace
+
+*Not implemented*
+
++ Request
+    + Attributes (object)
+        + Include User Ref
+
++ Response 201 (application/json)
+
++ Response 422 (application/json)
+
+### Remove member [DELETE]
+
+*Not implemented*
+    
++ Response 204
+
++ Response 404
+
+### List members [GET /workspaces/{workspaceUri}/members/]
+
+*Not implemented*
+
++ Response 200 (application/json)
+    + Attributes (object)
+        + `items` (array[Workspace Member])
+
+## Workspace Channel [/workspaces/{workspaceUri}/channels/{uri}]
+
++ Parameters
+    + `workspaceUri`: `school` (string, required)
+    + `uri`: `general` (string, required)
+
+        Channel URI
+
++ Attributes (object)
+    + Include Workspace Ref
+    + Include Channel Ref
+
+### Create a channel [POST /workspaces/{workspaceUri}/channels]
+
+*Not implemented*
+
++ Request
+    + Attributes (Workspace Channel)
+
++ Response 201 (application/json)
+
++ Response 422 (application/json)
+
+### Check if channel exists [HEAD]
+
+*Not implemented*
+
++ Response 200
+
++ Response 404
+
+### Delete a channel [DELETE]
+
+*Not implemented*
+
++ Response 201 (application/json)
+
++ Response 422 (application/json)
+
+### List channels [GET /workspaces/{workspaceUri}/channels/]
+
+*Not implemented*
+
++ Response 200
+    + Attributes (object)
+        + members (array[Workspace Channel])
+
+# Data structures
+
+## User Ref (object)
++ `id`: `eWRhpRV` (string, required)
+
+## User Email (object)
++ `email`: `venus@freenet.am` (string, required)
+
+## User Password (object)
++ `password`: `passw0rd` (string, required)
+
+## User Details (object)
++ `name`: `Venus` (string, required)
++ `image`: `https://images.unsplash.com/photo-1438761681033-6461ffad8d80` (string, optional)
+
+## Workspace Ref (object)
++ `uri`: `school` (string, required)
+
+## Workspace Details (object)
++ `name`: `School` (string, required)
++ `owner` (object, required)
+    + Include User Ref
+    + Include User Details
+
+## Membership Info (object)
++ `role`: `owner`, `member` (enum[string], required)
+
+## Channel Ref (object)
++ `uri`: `general` (string, required)
