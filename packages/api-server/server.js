@@ -1,5 +1,7 @@
 const app = require('.')
 
-const PORT = process.env.NODE_PORT || 3000
+const { NODE_PORT } = require('./src/config')
 
-app.listen(PORT, () => console.log(`App listenting on port ${PORT}`))
+// settings
+
+app.listen(NODE_PORT, () => console.log(`App listenting on port ${NODE_PORT}`))

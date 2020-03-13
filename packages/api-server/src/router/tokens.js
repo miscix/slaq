@@ -2,11 +2,9 @@ const { Router } = require('express')
 
 const jwt = require('jsonwebtoken')
 
+const { JWT_SECRET } = require('../config')
+
 const { users } = require('../data')
-
-// settings
-
-const JWT_SECRET = 'no-secret'
 
 // setup
 
