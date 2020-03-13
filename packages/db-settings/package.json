@@ -27,6 +27,7 @@
   "dependencies": {
     "getenv": "^1.0.0",
     "knex": "^0.20.11",
+    "objection": "^2.1.3",
     "sqlite3": "^4.1.1"
   }
 }
