@@ -5,6 +5,7 @@ const listen = require('test-listen')
 const got = require('got')
 
 const app = require('../..')
+const DATA = require('../../src/data')
 
 test.beforeEach(async t => {
   const server = http.createServer(app)
@@ -29,28 +30,72 @@ test.afterEach.always(async t => {
 
 // tokens
 
+test('POST /tokens - 201', async t => {
+  const { request } = t.context
+
+  const user = DATA.users[0]
+
+  const form = {
+    email: user.email,
+    password: user.password
+  }
+
+  const { statusCode, body } = await request
+    .post('tokens', { json: form })
+
+  t.is(statusCode, 201)
+  t.is(typeof body.token, 'string')
+})
+
 test('POST /tokens - 401', async t => {
   const { request } = t.context
 
-  const data = {
-    email: 'wrong@email.com',
-    password: 'no-password'
+  const user = DATA.users[0]
+
+  const form = {
+    email: user.email,
+    password: user.password + 'xx'
   }
 
-  const { statusCode } = await request.post('tokens', data)
-
-  t.is(statusCode, 401)
+  await request
+    .post('tokens', { json: form })
+    .catch(err => {
+      t.is(err.response.statusCode, 401)
+    })
 })
 
 // users
 
-test.todo('POST /users - 201')
+test('POST /users - 201', async t => {
+  const { request } = t.context
+
+  const form = {
+    name: 'Nyx',
+    email: 'nyx@gmail.com',
+    password: 'nyx'
+  }
+
+  const { statusCode } = await request
+    .post('users', { json: form })
+
+  t.is(statusCode, 201)
+})
+
 test.todo('POST /users - 409')
 test.todo('POST /users - 422')
 
-test.todo('GET /users/:userId - 401')
-test.todo('PUT /users/:userId - 401')
-test.todo('GET /users - 401')
+test.todo('GET /users/:id - 401')
+test.todo('PUT /users/:id - 401')
+
+test('GET /users - 401', async t => {
+  const { request } = t.context
+
+  await request
+    .get('users')
+    .catch(err => {
+      t.is(err.response.statusCode, 401)
+    })
+})
 
 // workspaces
 
