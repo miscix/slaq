@@ -1,11 +1,11 @@
 const express = require('express')
 
+const Router = require('./routes')
+
 function createApp () {
   const app = express()
 
-  app.get('/info', (req, res) => {
-    res.json({ ok: true })
-  })
+  app.use('/', Router())
 
   return app
 }
