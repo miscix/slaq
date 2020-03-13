@@ -4,10 +4,9 @@ const http = require('http')
 const listen = require('test-listen')
 const got = require('got')
 
-const createApp = require('../..')
+const app = require('../..')
 
 test.beforeEach(async t => {
-  const app = createApp()
   const server = http.createServer(app)
   const baseUrl = await listen(server)
 

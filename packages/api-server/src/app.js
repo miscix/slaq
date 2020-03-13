@@ -1,13 +1,11 @@
 const express = require('express')
 
-const Router = require('./routes')
+const router = require('./router')
 
-function createApp () {
-  const app = express()
+//
 
-  app.use('/', Router())
+const app = express()
 
-  return app
-}
+app.use('/', router)
 
-module.exports = createApp
+module.exports = app
