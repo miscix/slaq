@@ -1,8 +1,14 @@
 const { serial: test } = require('ava')
 
-const { Model, snakeCaseMappers } = require('objection')
+const { Model } = require('objection')
 
-const { knex } = require('..')
+const { knex, models } = require('..')
+
+//
+
+const { User, Credential } = models
+
+//
 
 test.before(async t => {
   Model.knex(knex)
@@ -17,39 +23,7 @@ test.afterEach.always(async t => {
   await knex.migrate.rollback()
 })
 
-test('user account graph', async t => {
-  class BaseModel extends Model {
-    static get columnNameMappers () {
-      return snakeCaseMappers()
-    }
-  }
-
-  //
-  class User extends BaseModel {
-    static get tableName () {
-      return 'users'
-    }
-
-    static get relationMappings () {
-      return {
-        credential: {
-          relation: Model.HasOneRelation,
-          modelClass: Credential,
-          join: {
-            from: 'users.id',
-            to: 'user_credentials.user_id'
-          }
-        }
-      }
-    }
-  }
-
-  class Credential extends BaseModel {
-    static get tableName () {
-      return 'user_credentials'
-    }
-  }
-
+test('user with credential (graph)', async t => {
   const body = {
     name: 'Exo',
     email: 'exo@freenet.am',
@@ -58,18 +32,55 @@ test('user account graph', async t => {
     }
   }
 
+  //
+
   await User
     .query()
     .insertGraph(body)
+    .then(assertGraph)
 
-  const res = await User
+  await User
     .query()
     .where({ email: body.email })
     .withGraphJoined('credential')
     .first()
+    .then(assertGraph)
 
-  t.not(res.id, undefined)
-  t.is(res.name, body.name)
-  t.is(res.email, body.email)
-  t.is(res.credential.hash, body.credential.hash)
+  await User
+    .query()
+    .where({ email: body.email })
+    .withGraphFetched('credential')
+    .first()
+    .then(assertGraph)
+
+  const user = await User
+    .query()
+    .where({ email: body.email })
+    .first()
+
+  await user
+    .$relatedQuery('credential')
+    .then(assertCredential)
+
+  //
+
+  function assertUser (user) {
+    t.true(user instanceof User)
+
+    t.not(user.id, undefined)
+    t.is(user.name, body.name)
+    t.is(user.email, body.email)
+  }
+
+  function assertCredential (credential) {
+    t.true(credential instanceof Credential)
+
+    t.not(credential.userId, undefined)
+    t.is(credential.hash, body.credential.hash)
+  }
+
+  function assertGraph (graph) {
+    assertUser(graph)
+    assertCredential(graph.credential)
+  }
 })
