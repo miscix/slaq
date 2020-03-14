@@ -10,7 +10,7 @@ const router = require('./router')
 
 const JWT_SECRET = 'no-secret'
 
-// middleware setup
+// app setup
 
 const app = express()
 

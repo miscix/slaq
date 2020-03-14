@@ -1,6 +1,6 @@
 const Knex = require('knex')
 
-const config = require('./config')
+const { config } = require('@bee/db-settings')
 
 //
 
