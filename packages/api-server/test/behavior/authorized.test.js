@@ -6,9 +6,9 @@ const got = require('got')
 
 const { Model } = require('objection')
 
-const { users } = require('@bee/assets')
+const knex = require('@bee/db-query-builder')
 
-const knex = require('../../src/knex')
+const { users } = require('@bee/assets')
 
 const app = require('../..')
 

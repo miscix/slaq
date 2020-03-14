@@ -4,9 +4,9 @@ const http = require('http')
 const listen = require('test-listen')
 const got = require('got')
 
-const { users } = require('@bee/assets')
+const knex = require('@bee/db-query-builder')
 
-const knex = require('../../src/knex')
+const { users } = require('@bee/assets')
 
 const app = require('../..')
 
