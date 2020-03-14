@@ -27,6 +27,19 @@ async function createUser (formData) {
     .insertGraph(graph)
 }
 
+async function fetchUser (id) {
+  return User
+    .query()
+    .findById(id)
+    .then(data => {
+      return data || Promise.reject(new Error(404))
+    })
+}
+
+async function fetchUserList () {
+  return User.query()
+}
+
 const router = Router()
 
 router
@@ -40,12 +53,22 @@ router
       .catch(next)
   })
   .get('/:id', (req, res, next) => {
-    res.status(501)
-    next('not implemented')
+    const resolveFetched = data => {
+      res.json(data)
+    }
+
+    return fetchUser(req.params.id)
+      .then(resolveFetched)
+      .catch(next)
   })
   .get('/', (req, res, next) => {
-    res.status(501)
-    next('not implemented')
+    const resolveFetched = items => {
+      res.json({ items })
+    }
+
+    return fetchUserList()
+      .then(resolveFetched)
+      .catch(next)
   })
 
 module.exports = router

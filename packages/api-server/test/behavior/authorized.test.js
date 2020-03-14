@@ -3,22 +3,19 @@ const { serial: test } = require('ava')
 const http = require('http')
 const listen = require('test-listen')
 const got = require('got')
-
-const { Model } = require('objection')
+const jwt = require('jsonwebtoken')
 
 const knex = require('@bee/db-query-builder')
 
 const { users } = require('@bee/assets')
+
+const { JWT_SECRET } = require('../../src/config')
 
 const app = require('../..')
 
 //
 
 //
-
-test.before(async t => {
-  Model.knex(knex)
-})
 
 test.beforeEach(async t => {
   await knex.migrate.latest()
@@ -27,9 +24,14 @@ test.beforeEach(async t => {
   const server = http.createServer(app)
   const baseUrl = await listen(server)
 
+  const token = jwt.sign(users[0], JWT_SECRET)
+
   const request = got.extend({
     prefixUrl: baseUrl,
-    responseType: 'json'
+    responseType: 'json',
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
   })
 
   t.context = {
@@ -48,22 +50,41 @@ test.afterEach.always(async t => {
 
 // users
 
-test.todo('GET /users/:id - 200')
+test('GET /users/:id - 200', async t => {
+  const { request } = t.context
+
+  const user = users[0]
+
+  const { statusCode, body } = await request.get(`users/${user.id}`)
+
+  t.is(statusCode, 200)
+
+  t.is(body.name, user.name)
+  t.is(body.imageUrl, user.imageUrl)
+})
 
 test('GET /users/:id - 404', async t => {
   const { request } = t.context
 
   const id = 100
 
-  const { statusCode } = await request.get(`users/${id}`)
-
-  t.is(statusCode, 404)
+  await t.throwsAsync(request.get(`users/${id}`))
+  // TODO: assert status code = 404
 })
 
 test.todo('PUT /users/:id - 204')
 test.todo('PUT /users/:id - 404')
 
-test.todo('GET /users - 200')
+test('GET /users - 200', async t => {
+  const { request } = t.context
+
+  await request
+    .get('users')
+    .then(({ body, statusCode }) => {
+      t.is(statusCode, 200)
+      t.is(body.items.length, 2)
+    })
+})
 
 // workspaces
 
