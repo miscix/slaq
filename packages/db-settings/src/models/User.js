@@ -4,7 +4,7 @@ const Credential = require('./Credential')
 
 //
 
-const TABLE_NAME = 'users'
+const TABLE_NAME = 'user'
 
 //
 
@@ -15,8 +15,8 @@ const relationMappings = {
     relation: HasOneRelation,
     modelClass: Credential,
     join: {
-      from: 'users.id',
-      to: 'user_credentials.user_id'
+      from: 'user.id',
+      to: 'user_credential.user_id'
     }
   }
 }

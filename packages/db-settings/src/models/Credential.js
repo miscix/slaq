@@ -2,7 +2,7 @@ const BaseModel = require('./internal/BaseModel')
 
 //
 
-const TABLE_NAME = 'user_credentials'
+const TABLE_NAME = 'user_credential'
 
 //
 

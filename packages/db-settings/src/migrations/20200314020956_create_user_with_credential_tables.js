@@ -1,6 +1,6 @@
 exports.up = function (knex) {
   return knex.schema
-    .createTable('users', tt => {
+    .createTable('user', tt => {
       // columns
 
       tt.increments('id')
@@ -19,12 +19,12 @@ exports.up = function (knex) {
 
       tt.unique('email')
     })
-    .createTable('user_credentials', tt => {
+    .createTable('user_credential', tt => {
       // columns
 
       tt.integer('user_id')
         .unsigned()
-        .references('users.id')
+        .references('user.id')
         .onDelete('CASCADE')
 
       tt.string('hash', 60)
@@ -36,6 +36,6 @@ exports.up = function (knex) {
 
 exports.down = function (knex) {
   return knex.schema
-    .dropTableIfExists('users')
-    .dropTableIfExists('user_credentials')
+    .dropTableIfExists('user')
+    .dropTableIfExists('user_credential')
 }
