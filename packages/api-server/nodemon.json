@@ -6,7 +6,8 @@
     "test/**"
   ],
   "env": {
-    "NODE_ENV": "development"
+    "NODE_ENV": "development",
+    "DB_SEEDS_DIR": "./assets/seeds"
   },
   "ext": "js,json"
 }

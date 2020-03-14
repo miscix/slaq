@@ -4,7 +4,8 @@ const files = [
 ]
 
 const environmentVariables = {
-  NODE_ENV: 'test'
+  NODE_ENV: 'test',
+  DB_SEEDS_DIR: './assets/seeds'
 }
 
 const require = []

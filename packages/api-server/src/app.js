@@ -1,16 +1,24 @@
 const express = require('express')
 
+const { Model } = require('objection')
+
 const bodyParser = require('body-parser')
 
 const checkAuth = require('./middlewares/check-auth')
 
 const router = require('./router')
 
+const knex = require('./knex')
+
 // settings
 
 const JWT_SECRET = 'no-secret'
 
-// middleware setup
+//
+
+Model.knex(knex)
+
+// app setup
 
 const app = express()
 
