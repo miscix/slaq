@@ -1,8 +1,9 @@
 const express = require('express')
 
-const { Model } = require('objection')
-
 const bodyParser = require('body-parser')
+
+// XXX: dirty
+const BaseModel = require('@bee/db-models/src/internal/BaseModel')
 
 const checkAuth = require('./middlewares/check-auth')
 
@@ -16,7 +17,7 @@ const JWT_SECRET = 'no-secret'
 
 //
 
-Model.knex(knex)
+BaseModel.knex(knex)
 
 // app setup
 

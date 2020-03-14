@@ -4,9 +4,26 @@ const http = require('http')
 const listen = require('test-listen')
 const got = require('got')
 
+const { Model } = require('objection')
+
+const { users } = require('@bee/assets')
+
+const knex = require('../../src/knex')
+
 const app = require('../..')
 
+//
+
+//
+
+test.before(async t => {
+  Model.knex(knex)
+})
+
 test.beforeEach(async t => {
+  await knex.migrate.latest()
+  await knex.seed.run()
+
   const server = http.createServer(app)
   const baseUrl = await listen(server)
 
@@ -22,6 +39,8 @@ test.beforeEach(async t => {
 })
 
 test.afterEach.always(async t => {
+  await knex.migrate.rollback()
+
   t.context.server.close()
 })
 
@@ -30,6 +49,7 @@ test.afterEach.always(async t => {
 // users
 
 test.todo('GET /users/:id - 200')
+
 test('GET /users/:id - 404', async t => {
   const { request } = t.context
 

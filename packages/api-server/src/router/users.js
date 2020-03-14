@@ -1,20 +1,43 @@
+const R = require('ramda')
 const { Router } = require('express')
 
-const { users } = require('../data')
+const bcrypt = require('bcrypt')
+
+const { User } = require('@bee/db-models')
+
+//
+
+const BCRYPT_SALT_ROUNDS = 10
+
+//
+
+async function createUser (formData) {
+  const hash = await bcrypt
+    .hash(formData.password, BCRYPT_SALT_ROUNDS)
+
+  const userData = R.dissoc('password', formData)
+
+  const graph = {
+    ...userData,
+    credential: { hash }
+  }
+
+  return User
+    .query()
+    .insertGraph(graph)
+}
 
 const router = Router()
 
 router
-  .post('/', (req, res, next) => {
-    const userForm = req.body
-    const id = Date.now().toString()
+  .post('/', async (req, res, next) => {
+    const resolveCreated = () => {
+      res.status(201).end()
+    }
 
-    users.push({ id, ...userForm })
-
-    res.status(201).end()
-    // res.header()
-
-    return next()
+    return createUser(req.body)
+      .then(resolveCreated)
+      .catch(next)
   })
   .get('/:id', (req, res, next) => {
     res.status(501)
