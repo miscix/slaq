@@ -16,7 +16,7 @@ test.before(async t => {
 
 test.beforeEach(async t => {
   await knex.migrate.latest()
-  // await knex.seed.run()
+  await knex.seed.run()
 })
 
 test.afterEach.always(async t => {
@@ -25,8 +25,8 @@ test.afterEach.always(async t => {
 
 test('user with credential (graph)', async t => {
   const body = {
-    name: 'Exo',
-    email: 'exo@freenet.am',
+    name: 'Hopar',
+    email: 'hopar@freenet.am',
     credential: {
       hash: 'xxx'
     }

@@ -6,8 +6,7 @@ const files = [
 // const ignoredByWatcher = []
 
 const environmentVariables = {
-  NODE_ENV: 'test',
-  DB_SEEDS_DIR: './assets/seeds'
+  NODE_ENV: 'test'
 }
 
 const serial = true

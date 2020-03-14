@@ -25,9 +25,12 @@
     "nyc": "^15.0.0"
   },
   "dependencies": {
+    "@bee/assets": "*",
+    "bcrypt": "^4.0.1",
     "getenv": "^1.0.0",
     "knex": "^0.20.11",
     "objection": "^2.1.3",
+    "ramda": "^0.27.0",
     "sqlite3": "^4.1.1"
   }
 }
