@@ -1,8 +1,8 @@
 const { serial: test } = require('ava')
 
-const { knex } = require('../..')
-
 const { users } = require('@bee/assets')
+
+const knex = require('../helpers/knex')
 
 //
 
