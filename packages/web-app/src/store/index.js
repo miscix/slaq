@@ -18,8 +18,13 @@ const actions = {
     return api
       .fetchGreeting()
       .then(commit)
+  },
+  loginUser (ctx, formData) {
+    console.log(formData)
+  },
+  signupUser (ctx, formData) {
+    console.log(formData)
   }
-
 }
 
 export default new Vuex.Store({

@@ -1,7 +1,6 @@
 <template lang="pug">
   el-container#app
-
-    el-header
+    el-header(v-if='hasToken')
       el-menu(
         mode="horizontal"
         :router="true"
@@ -10,8 +9,30 @@
           | Home
 
     el-main
-      router-view
+      router-view(v-if='hasToken')
+      auth-page(v-else)
 </template>
+
+<script>
+import { mapGetters } from 'vuex'
+
+import AuthPage from './views/Auth'
+
+const computed = {
+  ...mapGetters([
+    'hasToken'
+  ])
+}
+
+export default {
+  name: 'App',
+  computed,
+  components: {
+    AuthPage
+  }
+}
+
+</script>
 
 <style scoped lang="scss">
 #app {
