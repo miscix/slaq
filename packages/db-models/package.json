@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@bee/db-settings": "*",
+    "@bee/db-query-builder": "*",
     "objection": "^2.1.3"
   }
 }

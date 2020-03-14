@@ -1,7 +1,7 @@
 {
-  "name": "@bee/db-settings",
+  "name": "@bee/api-server",
   "version": "0.0.0",
-  "description": "Shared Knex settings",
+  "description": "API Server",
   "license": "MIT",
   "main": "index.js",
   "scripts": {
@@ -11,9 +11,12 @@
     "lint": "eslint --fix index.js src/**/*.js",
     "lint:staged": "lint-staged",
     "precommit": "npm run lint:staged",
-    "prepush": "npm run lint && npm test"
+    "prepush": "npm run lint && npm test",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "devDependencies": {
+    "@bee/assets": "*",
     "ava": "^3.2.0",
     "eslint": "^6.7.2",
     "eslint-config-standard": "^14.1.0",
@@ -21,15 +24,23 @@
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
+    "got": "^10.6.0",
     "lint-staged": "^10.0.7",
+    "nodemon": "^2.0.2",
     "nyc": "^15.0.0",
-    "sqlite3": "^4.1.1"
+    "sqlite3": "^4.1.1",
+    "test-listen": "^1.1.0"
   },
   "dependencies": {
-    "@bee/assets": "*",
+    "@bee/db-models": "*",
+    "@bee/db-query-builder": "*",
+    "@bee/db-settings": "*",
     "bcrypt": "^4.0.1",
-    "getenv": "^1.0.0",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-jwt": "^5.3.1",
+    "jsonwebtoken": "^8.5.1",
     "knex": "^0.20.11",
-    "ramda": "^0.27.0"
+    "objection": "^2.1.3"
   }
 }

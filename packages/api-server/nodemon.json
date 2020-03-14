@@ -1,0 +1,14 @@
+{
+  "restartable": "r",
+  "ignore": [
+    ".git",
+    "node_modules/**/node_modules",
+    "test/**"
+  ],
+  "env": {
+    "NODE_ENV": "development",
+    "DB_SEEDS_DIR": "./assets/seeds"
+  },
+  "ext": "js,json"
+}
+

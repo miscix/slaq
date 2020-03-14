@@ -1,17 +1,12 @@
 const { serial: test } = require('ava')
 
-const { Model } = require('objection')
+const knex = require('@bee/db-query-builder')
 
-const { knex } = require('@bee/db-settings')
 const { users } = require('@bee/assets')
 
 const { User } = require('..')
 
 //
-
-test.before(async t => {
-  Model.knex(knex)
-})
 
 test.beforeEach(async t => {
   await knex.migrate.latest()

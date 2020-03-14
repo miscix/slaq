@@ -1,7 +1,7 @@
 {
-  "name": "@bee/db-settings",
+  "name": "@bee/db-query-builder",
   "version": "0.0.0",
-  "description": "Shared Knex settings",
+  "description": "Shared Knex instance",
   "license": "MIT",
   "main": "index.js",
   "scripts": {
@@ -26,10 +26,7 @@
     "sqlite3": "^4.1.1"
   },
   "dependencies": {
-    "@bee/assets": "*",
-    "bcrypt": "^4.0.1",
-    "getenv": "^1.0.0",
-    "knex": "^0.20.11",
-    "ramda": "^0.27.0"
+    "@bee/db-settings": "*",
+    "knex": "^0.20.11"
   }
 }
