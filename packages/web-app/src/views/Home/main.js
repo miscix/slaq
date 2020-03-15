@@ -7,11 +7,11 @@ const computed = mapState([
 ])
 
 const methods = mapActions([
-  'fetchGreeting'
+  // 'fetchGreeting'
 ])
 
 function mounted () {
-  return this.fetchGreeting()
+  // return this.fetchGreeting()
 }
 
 export default {

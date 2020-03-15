@@ -1,8 +1,8 @@
 const data = () => ({
   form: {
-    name: '',
-    email: '',
-    password: ''
+    name: 'A',
+    email: 'a@a.com',
+    password: 'asdasd'
   },
   rules: {
     name: [

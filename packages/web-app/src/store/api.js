@@ -1,11 +1,14 @@
 import ky from 'ky'
 
+const { localStorage } = window
+
 const client = ky.extend({
   prefixUrl: '/api',
   hooks: {
     beforeRequest: [
       request => {
-        request.headers.set('X-Requested-With', 'ky')
+        const token = localStorage.getItem('token')
+        request.headers.set('Authorization', `Bearer ${token}`)
       }
     ]
   }
@@ -14,7 +17,7 @@ const client = ky.extend({
 export async function createUser (signupFormData) {
   return client
     .post('users', { json: signupFormData })
-    .json()
+    .then(() => Promise.resolve())
 }
 
 export async function acquireToken (loginFormData) {

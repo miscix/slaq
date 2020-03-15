@@ -1,7 +1,7 @@
 const data = () => ({
   form: {
-    email: '',
-    password: ''
+    email: 'nyx@gmail.com',
+    password: 'passw0rd'
   },
   rules: {
     email: [

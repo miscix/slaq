@@ -1,13 +1,7 @@
 <template lang="pug">
   el-container#app
-    el-header(v-if='hasToken')
-      el-menu(
-        mode="horizontal"
-        :router="true"
-      )
-        el-menu-item(index="/")
-          | Home
-
+    el-header
+      the-navbar(v-if="hasToken")
     el-main
       router-view(v-if='hasToken')
       auth-page(v-else)
@@ -16,6 +10,7 @@
 <script>
 import { mapGetters } from 'vuex'
 
+import TheNavbar from './components/TheNavbar'
 import AuthPage from './views/Auth'
 
 const computed = {
@@ -28,6 +23,7 @@ export default {
   name: 'App',
   computed,
   components: {
+    TheNavbar,
     AuthPage
   }
 }

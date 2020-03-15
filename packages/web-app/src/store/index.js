@@ -23,22 +23,34 @@ const mutations = {
   SET_TOKEN (state, token) {
     state.token = token
   },
+  REMOVE_TOKEN (state, token) {
+    state.token = null
+  },
   SET_CURRENT_USER (state, user) {
     state.currentUser = user
   }
 }
 
+const { localStorage } = window
+
 const actions = {
   loginUser ({ commit }, formData) {
-    const setToken = cred =>
-      commit('SET_TOKEN', cred.token)
+    const setToken = ({ token }) => {
+      localStorage.setItem('token', token)
+      commit('SET_TOKEN', token)
+    }
 
     return api
       .acquireToken(formData)
       .then(setToken)
   },
   signupUser (ctx, formData) {
-    console.log(formData)
+    return api.createUser(formData)
+  },
+  logout ({ commit }) {
+    localStorage.removeItem('token')
+    commit('REMOVE_TOKEN')
+    return Promise.resolve()
   },
   acquireCurrentUser ({ getters, commit }) {
     const { id } = getters.tokenPayload || {}
@@ -59,7 +71,7 @@ const actions = {
 
 export default new Vuex.Store({
   state: {
-    token: undefined,
+    token: localStorage.getItem('token'),
     currentUser: undefined
   },
   getters,

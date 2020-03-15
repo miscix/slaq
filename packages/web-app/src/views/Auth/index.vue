@@ -4,13 +4,13 @@
       el-card(shadow="hover")
         div(slot="header")
           h4 Login
-        login-form(@submit="loginUser")
+        login-form(@submit="handleLogin")
 
     el-col(:span="10" :offset="2")
       el-card(shadow="hover")
         div(slot="header")
           h4 Sign Up
-        signup-form(@submit="signupUser")
+        signup-form(@submit="handleSignup")
 </template>
 
 <script src="./main.js"></script>
