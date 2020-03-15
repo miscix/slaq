@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    the-greeting(message="Under construction")
+    h3 Under Construction
 </template>
 
 <script src="./main.js"></script>

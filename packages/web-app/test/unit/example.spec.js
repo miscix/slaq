@@ -4,7 +4,7 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 
 import Element from 'element-ui'
 
-import TheGreeting from '@/components/TheGreeting'
+import App from '@/App'
 
 test.before(t => {
   const localVue = createLocalVue()
@@ -13,7 +13,7 @@ test.before(t => {
   t.context = { localVue }
 })
 
-test('TheGreeting should render', t => {
-  const wrapper = shallowMount(TheGreeting, t.context)
+test.skip('App should render', t => {
+  const wrapper = shallowMount(App, t.context)
   t.is(wrapper.constructor.name, 'VueWrapper')
 })
