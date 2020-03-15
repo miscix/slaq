@@ -8,7 +8,8 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/'
+    path: '/',
+    redirect: { name: 'ProfilePage' }
   },
   {
     path: '/profile',

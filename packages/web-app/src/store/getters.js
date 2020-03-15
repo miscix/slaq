@@ -10,9 +10,11 @@ export function tokenPayload (state) {
   return decodeToken(state.token)
 }
 
-export function currentUser (state, getters) {
-  const { users } = state
-  const { id } = getters.tokenPayload
+export function currentUserId (state, getters) {
+  const { id } = getters.tokenPayload || {}
+  return id
+}
 
-  return users[id]
+export function userById (state) {
+  return id => state.users[id]
 }

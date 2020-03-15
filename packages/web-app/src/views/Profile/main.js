@@ -1,32 +1,36 @@
 import { mapGetters, mapActions } from 'vuex'
+import * as R from 'ramda'
 
 const data = () => ({
   isLoading: false
 })
 
 const computed = {
-  ...mapGetters([
-    'currentUser'
-  ]),
+  ...mapGetters({
+    userId: 'currentUserId',
+    getUser: 'userById'
+  }),
+  currentUser () {
+    return this.getUser(this.userId)
+  },
   imageUrl () {
-    const { imageUrl } = this.currentUser || {}
-    return imageUrl
+    return R.prop('imageUrl', this.currentUser)
   }
 }
 
 const methods = {
   ...mapActions([
-    'fetchCurrentUser'
+    'fetchUserById'
   ]),
   initiateLoading () {
-    this.isLoading = true
-
     const completeLoading = () => {
       this.isLoading = false
     }
 
+    this.isLoading = true
+
     return this
-      .fetchCurrentUser()
+      .fetchUserById(this.userId)
       .then(completeLoading)
   }
 }

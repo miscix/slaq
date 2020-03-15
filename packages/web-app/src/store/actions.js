@@ -37,7 +37,7 @@ export async function logout (ctx) {
   reloadPage()
 }
 
-export async function fetchUser (ctx, id) {
+export async function fetchUserById (ctx, id) {
   const storeUser = user =>
     ctx.commit('PUT_USER', user)
 
@@ -45,12 +45,4 @@ export async function fetchUser (ctx, id) {
     .get(`users/${id}`)
     .json()
     .then(R.tap(storeUser))
-}
-
-export async function fetchCurrentUser (ctx) {
-  const { getters, dispatch } = ctx
-
-  const id = getters.tokenPayload.id
-
-  return dispatch('fetchUser', id)
 }
