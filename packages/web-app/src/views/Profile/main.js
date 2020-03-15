@@ -1,21 +1,22 @@
-import { mapState, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 const data = () => ({
   isLoading: false
 })
 
 const computed = {
-  ...mapState([
+  ...mapGetters([
     'currentUser'
   ]),
   imageUrl () {
-    return this.currentUser && this.currentUser.imageUrl
+    const { imageUrl } = this.currentUser || {}
+    return imageUrl
   }
 }
 
 const methods = {
   ...mapActions([
-    'acquireCurrentUser'
+    'fetchCurrentUser'
   ]),
   initiateLoading () {
     this.isLoading = true
@@ -25,9 +26,8 @@ const methods = {
     }
 
     return this
-      .acquireCurrentUser()
+      .fetchCurrentUser()
       .then(completeLoading)
-      .catch(console.error)
   }
 }
 
@@ -38,7 +38,7 @@ function mounted () {
 }
 
 export default {
-  name: 'ProfiePage',
+  name: 'ProfilePage',
   data,
   computed,
   methods,

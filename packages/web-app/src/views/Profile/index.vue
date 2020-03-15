@@ -7,8 +7,9 @@
       img(src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png")
 
     div.user-details(v-if="currentUser")
-      h4 Nyx
-      el-link(href="mailto:xxxx") nyx@gmail.com
+      h4 {{ currentUser.name }}
+      el-link(href="mailto:`${currentUser.email}`")
+        | {{ currentUser.email }}
 </template>
 
 <script src="./main.js"></script>

@@ -5,14 +5,14 @@ import SignupForm from '@/components/SignupForm'
 
 const methods = {
   ...mapActions([
-    'loginUser',
-    'signupUser'
+    'login',
+    'signup'
   ]),
   handleLogin (formData) {
     const handleError = err => this.reportError(err)
 
     return this
-      .loginUser(formData)
+      .login(formData)
       .catch(handleError)
   },
   handleSignup (formData) {
@@ -23,7 +23,7 @@ const methods = {
     }
 
     return this
-      .signupUser(formData)
+      .signup(formData)
       .then(handleLogin) // acquire token here
       .catch(handleError)
   },
