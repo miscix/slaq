@@ -24,8 +24,6 @@ test.afterEach.always(async t => {
 
 // tests
 
-// createUser
-
 test('createWorkspaceAs - ok', async t => {
   const form = {
     uri: 'x-corp',

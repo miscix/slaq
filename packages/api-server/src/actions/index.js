@@ -14,3 +14,7 @@ module.exports.createWorkspaceAs = require('./createWorkspaceAs')
 module.exports.fetchWorkspaceByUri = require('./fetchWorkspaceByUri')
 module.exports.fetchWorkspaceByUriAs = require('./fetchWorkspaceByUriAs')
 module.exports.destroyWorkspaceByUriAs = require('./destroyWorkspaceByUriAs')
+
+//
+
+module.exports.createChannelAs = require('./createChannelAs')

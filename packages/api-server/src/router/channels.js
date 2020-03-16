@@ -5,20 +5,19 @@ const X = require('../actions')
 const router = Router()
 
 router
-  .post('/', (req, res, next) => {
+  .post('/workspaces/:workspaceUri/channels', (req, res, next) => {
     const resolveCreated = doc => {
       res.status(201).end()
     }
 
-    return X.createChannelAs(req.user.id, req.body)
+    const { uri } = req.body
+    const { workspaceUri } = req.params
+
+    return X.createChannelAs(req.user.id, { uri, workspaceUri })
       .then(resolveCreated)
       .catch(next)
   })
-  .delete('/:uri', (req, res, next) => {
-    res.status(501)
-    next('not implemented')
-  })
-  .get('/', (req, res, next) => {
+  .delete('/workspaces/:workspaceUri/channels/:uri', (req, res, next) => {
     res.status(501)
     next('not implemented')
   })
