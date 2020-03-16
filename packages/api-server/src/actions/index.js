@@ -11,3 +11,5 @@ module.exports.fetchUserList = require('./fetchUserList')
 //
 
 module.exports.createWorkspaceAs = require('./createWorkspaceAs')
+module.exports.fetchWorkspaceByUri = require('./fetchWorkspaceByUri')
+module.exports.fetchWorkspaceByUriAs = require('./fetchWorkspaceByUriAs')

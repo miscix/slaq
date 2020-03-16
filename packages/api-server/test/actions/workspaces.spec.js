@@ -69,3 +69,47 @@ test('createWorkspaceAs - fail (duplicate uri)', async t => {
 
   await t.throwsAsync(X.createWorkspaceAs(userId, form))
 })
+
+// fetchWorkspaceByUri
+
+test('fetchWorkspaceByUri - ok', async t => {
+  const uri = workspaces[0].uri
+
+  const res = await X.fetchWorkspaceByUri(uri)
+
+  t.is(res.uri, uri)
+
+  t.true(Array.isArray(res.members), 'include members')
+  t.true(Array.isArray(res.channels), 'include channels')
+})
+
+test('fetchWorkspaceByUri - fail (not found)', async t => {
+  const uri = 'other-xxx'
+
+  await t.throwsAsync(
+    X.fetchWorkspaceByUri(uri),
+    { instanceOf: Error } // TODO: assert not found
+  )
+})
+
+test('fetchWorkspaceByUriAs - ok', async t => {
+  const userId = users[0].id
+  const uri = workspaces[0].uri
+
+  const res = await X.fetchWorkspaceByUriAs(userId, uri)
+
+  t.is(res.uri, uri)
+
+  t.true(Array.isArray(res.members), 'include members')
+  t.true(Array.isArray(res.channels), 'include channels')
+})
+
+test('fetchWorkspaceByUriAs - fail (not allowed)', async t => {
+  const userId = users[0].id
+  const uri = workspaces[1].uri
+
+  await t.throwsAsync(
+    X.fetchWorkspaceByUriAs(userId, uri),
+    { instanceOf: Error }
+  )
+})

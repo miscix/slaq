@@ -91,10 +91,46 @@ test.todo('GET /workspaces - 401')
 
 //
 
-test.todo('GET /workspaces/:uri - 200')
+test('GET /workspaces/:uri - 200', async t => {
+  const { request } = t.context
+
+  const uri = workspaces[0].uri
+
+  const res = await request
+    .get(`workspaces/${uri}`)
+    .json()
+
+  t.is(res.uri, uri)
+
+  t.true(Array.isArray(res.members), 'include members')
+  t.true(Array.isArray(res.channels), 'include channels')
+})
+
 test.todo('GET /workspaces/:uri - 401')
-test.todo('GET /workspaces/:uri - 403')
-test.todo('GET /workspaces/:uri - 404')
+
+test('GET /workspaces/:uri - 403', async t => {
+  const { request } = t.context
+
+  const uri = workspaces[1].uri
+
+  await t.throwsAsync(
+    request
+      .get(`workspaces/${uri}`)
+      .json()
+  )
+})
+
+test('GET /workspaces/:uri - 404', async t => {
+  const { requestNoAuth: request } = t.context
+
+  const uri = 'xxx'
+
+  await t.throwsAsync(
+    request.get(`workspaces/${uri}`)
+  )
+})
+
+//
 
 test.todo('PUT /workspaces/:uri - 204')
 test.todo('PUT /workspaces/:uri - 401')

@@ -19,8 +19,14 @@ router
       .catch(next)
   })
   .get('/:uri', (req, res, next) => {
-    res.status(501)
-    next('not implemented')
+    const resolveOk = data => {
+      res.status(200)
+      res.json(data)
+    }
+
+    return X.fetchWorkspaceByUriAs(req.user.id, req.params.uri)
+      .then(resolveOk)
+      .catch(next)
   })
   .delete('/:uri', (req, res, next) => {
     res.status(501)
