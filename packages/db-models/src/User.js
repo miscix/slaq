@@ -2,15 +2,7 @@ const BaseModel = require('./internal/BaseModel')
 
 //
 
-const { HasOneRelation } = BaseModel
-
-//
-
-class Credential extends BaseModel {
-  static get tableName () {
-    return 'user_credential'
-  }
-}
+const { HasOneRelation, HasManyRelation, ManyToManyRelation } = BaseModel
 
 //
 
@@ -22,15 +14,39 @@ class User extends BaseModel {
   static get relationMappings () {
     const credential = {
       relation: HasOneRelation,
-      modelClass: Credential,
+      modelClass: require('./UserCredential'),
       join: {
         from: 'user.id',
         to: 'user_credential.user_id'
       }
     }
 
+    const workspaces = {
+      relation: ManyToManyRelation,
+      modelClass: require('./Workspace'),
+      join: {
+        from: 'user.id',
+        through: {
+          from: 'workspace_user.user_id',
+          to: 'workspace_user.workspace_uri'
+        },
+        to: 'workspace.uri'
+      }
+    }
+
+    const ownerOf = {
+      relation: HasManyRelation,
+      modelClass: require('./Workspace'),
+      join: {
+        from: 'user.id',
+        to: 'workspace.created_by'
+      }
+    }
+
     return {
-      credential
+      credential,
+      workspaces,
+      ownerOf
     }
   }
 }

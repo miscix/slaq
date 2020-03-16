@@ -4,7 +4,7 @@ const knex = require('@bee/db-query-builder')
 
 const { users } = require('@bee/assets')
 
-const { User } = require('..')
+const { User, UserCredential, Workspace } = require('..')
 
 //
 
@@ -25,10 +25,46 @@ test('query related `credential`', async t => {
 
   await user
     .$relatedQuery('credential')
-    .then(assertCredential)
+    .then(assertItem)
 
-  function assertCredential (credential) {
-    t.not(credential.userId, undefined)
-    t.not(credential.hash, undefined)
+  function assertItem (item) {
+    t.not(item.userId, undefined)
+    t.not(item.hash, undefined)
+  }
+})
+
+test('query related `workspaces`', async t => {
+  const user = await User
+    .query()
+    .findById(users[0].id)
+
+  await user
+    .$relatedQuery('workspaces')
+    .then(assertItems)
+
+  function assertItem (item) {
+    t.true(item instanceof Workspace)
+  }
+
+  function assertItems (items) {
+    items.forEach(assertItem)
+  }
+})
+
+test('query related `ownerOf`', async t => {
+  const user = await User
+    .query()
+    .findById(users[0].id)
+
+  await user
+    .$relatedQuery('ownerOf')
+    .then(assertItems)
+
+  function assertItem (item) {
+    t.true(item instanceof Workspace)
+  }
+
+  function assertItems (items) {
+    items.forEach(assertItem)
   }
 })
