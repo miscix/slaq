@@ -44,10 +44,9 @@ test('POST /users - 409', async t => {
   const form = users[0]
 
   await t.throwsAsync(
-    request.post('users', { json: form })
+    request.post('users', { json: form }),
+    { message: /Conflict/ }
   )
-
-  // TODO: assert 409
 })
 
 test.todo('POST /users - 422')
@@ -66,11 +65,10 @@ test('GET /users - 200', async t => {
 test('GET /users - 401', async t => {
   const { requestNoAuth: request } = t.context
 
-  await request
-    .get('users')
-    .catch(err => {
-      t.is(err.response.statusCode, 401)
-    })
+  await t.throwsAsync(
+    request.get('users'),
+    { message: /Unauthorized/ }
+  )
 })
 
 test('GET /users/:id - 200', async t => {
@@ -91,8 +89,10 @@ test('GET /users/:id - 404', async t => {
 
   const id = 100
 
-  await t.throwsAsync(request.get(`users/${id}`))
-  // TODO: assert status code = 404
+  await t.throwsAsync(
+    request.get(`users/${id}`),
+    { message: /Not Found/ }
+  )
 })
 
 test.todo('GET /users/:id - 401')

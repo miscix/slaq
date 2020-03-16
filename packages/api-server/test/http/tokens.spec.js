@@ -51,7 +51,8 @@ test('POST /tokens - 401', async t => {
   }
 
   await t.throwsAsync(
-    request.post('tokens', { json: form })
+    request.post('tokens', { json: form }),
+    { message: /Unauthorized/ }
   )
 
   // TODO: assert status code = 401

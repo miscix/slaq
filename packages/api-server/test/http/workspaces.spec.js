@@ -53,7 +53,7 @@ test('POST /workspaces - 401', async t => {
 
   await t.throwsAsync(
     request.post('workspaces', { json: form }),
-    { instanceOf: Error } // TODO: assert 401
+    { message: /Unauthorized/ }
   )
 })
 
@@ -66,7 +66,7 @@ test('POST /workspaces - 409', async t => {
 
   await t.throwsAsync(
     request.post('workspaces', { json: form }),
-    { instanceOf: Error } // TODO: assert 409
+    { message: /Conflict/ }
   )
 })
 
@@ -80,7 +80,7 @@ test.failing('POST /workspaces - 422', async t => {
 
   await t.throwsAsync(
     request.post('workspaces', { json: form }),
-    { instanceOf: Error } // TODO: assert 409
+    { message: /Unprocessable Entity/ }
   )
 })
 
@@ -114,9 +114,8 @@ test('GET /workspaces/:uri - 403', async t => {
   const uri = workspaces[1].uri
 
   await t.throwsAsync(
-    request
-      .get(`workspaces/${uri}`)
-      .json()
+    request.get(`workspaces/${uri}`),
+    { message: /Forbidden/ }
   )
 })
 
@@ -126,7 +125,8 @@ test('GET /workspaces/:uri - 404', async t => {
   const uri = 'xxx'
 
   await t.throwsAsync(
-    request.get(`workspaces/${uri}`)
+    request.get(`workspaces/${uri}`),
+    { message: /Not Found/ }
   )
 })
 
@@ -160,7 +160,8 @@ test('DELETE /workspaces/:uri - 403', async t => {
   const uri = workspaces[1].uri
 
   await t.throwsAsync(
-    request.delete(`workspaces/${uri}`)
+    request.delete(`workspaces/${uri}`),
+    { message: /Forbidden/ }
   )
 })
 

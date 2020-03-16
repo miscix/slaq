@@ -2,6 +2,8 @@ const R = require('ramda')
 
 const { Workspace } = require('@bee/db-models')
 
+const fromDbError = require('../helpers/error-handler-db')
+
 //
 
 const asMemberNode = R.compose(
@@ -20,6 +22,7 @@ async function createWorkspaceAs (userId, form) {
   return Workspace
     .query()
     .insertGraph(graphFrom(form), { relate: true })
+    .catch(fromDbError)
 }
 
 //

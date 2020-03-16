@@ -1,5 +1,5 @@
 const R = require('ramda')
-
+const createError = require('http-errors')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
@@ -16,6 +16,13 @@ const TOKEN_FIELDS = [
 
 //
 
+const rejectAsUnauthorized = () => {
+  const err = createError(401)
+  return Promise.reject(err)
+}
+
+const assertUserExists = R.when(R.isNil, rejectAsUnauthorized)
+
 const payloadFrom = R.pick(TOKEN_FIELDS)
 
 const sign = payload => jwt.sign(payload, JWT_SECRET)
@@ -29,16 +36,13 @@ async function createToken (loginForm) {
     .query()
     .where({ email })
     .first()
+    .then(assertUserExists)
 
   const credential = await user.$relatedQuery('credential')
 
-  const isMatch = await bcrypt.compare(password, credential.hash)
-
-  if (isMatch) {
-    return sign(payloadFrom(user))
-  }
-
-  return Promise.reject(Error('no'))
+  return bcrypt.compareSync(password, credential.hash)
+    ? sign(payloadFrom(user))
+    : rejectAsUnauthorized()
 }
 
 //

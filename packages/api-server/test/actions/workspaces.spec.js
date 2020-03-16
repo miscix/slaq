@@ -1,6 +1,7 @@
 const { serial: test } = require('ava')
 
 const R = require('ramda')
+const errors = require('http-errors')
 
 const knex = require('@bee/db-query-builder')
 
@@ -48,7 +49,10 @@ test.failing('createWorkspaceAs - fail (inclomplete)', async t => {
     name: ''
   }
 
-  await t.throwsAsync(X.createWorkspaceAs(userId, form))
+  await t.throwsAsync(
+    X.createWorkspaceAs(userId, form),
+    { instanceOf: errors.UnprocessableEntity }
+  )
 })
 
 test.failing('createWorkspaceAs - fail (invalid)', async t => {
@@ -59,7 +63,10 @@ test.failing('createWorkspaceAs - fail (invalid)', async t => {
     name: ''
   }
 
-  await t.throwsAsync(X.createWorkspaceAs(userId, form))
+  await t.throwsAsync(
+    X.createWorkspaceAs(userId, form),
+    { instanceOf: errors.UnprocessableEntity }
+  )
 })
 
 test('createWorkspaceAs - fail (duplicate uri)', async t => {
@@ -68,7 +75,10 @@ test('createWorkspaceAs - fail (duplicate uri)', async t => {
   const userId = users[0].id
   const form = parse(workspaces[0])
 
-  await t.throwsAsync(X.createWorkspaceAs(userId, form))
+  await t.throwsAsync(
+    X.createWorkspaceAs(userId, form),
+    { instanceOf: errors.Conflict }
+  )
 })
 
 // fetchWorkspaceByUri
@@ -89,7 +99,7 @@ test('fetchWorkspaceByUri - fail (not found)', async t => {
 
   await t.throwsAsync(
     X.fetchWorkspaceByUri(uri),
-    { instanceOf: Error } // TODO: assert not found
+    { instanceOf: errors.NotFound }
   )
 })
 
@@ -105,13 +115,13 @@ test('fetchWorkspaceByUriAs - ok', async t => {
   t.true(Array.isArray(res.channels), 'include channels')
 })
 
-test('fetchWorkspaceByUriAs - fail (not allowed)', async t => {
+test('fetchWorkspaceByUriAs - fail (forbidden)', async t => {
   const userId = users[0].id
   const uri = workspaces[1].uri
 
   await t.throwsAsync(
     X.fetchWorkspaceByUriAs(userId, uri),
-    { instanceOf: Error }
+    { instanceOf: errors.Forbidden }
   )
 })
 
@@ -131,11 +141,12 @@ test('destroyWorkspaceByUriAs - ok', async t => {
     .then(t.falsey)
 })
 
-test('destroyWorkspaceByUriAs - fail (not allowed)', async t => {
+test('destroyWorkspaceByUriAs - fail (forbidden)', async t => {
   const userId = users[1].id
   const uri = workspaces[0].uri
 
   await t.throwsAsync(
-    X.destroyWorkspaceByUriAs(userId, uri)
+    X.destroyWorkspaceByUriAs(userId, uri),
+    { instanceOf: errors.Forbidden }
   )
 })

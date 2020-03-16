@@ -1,15 +1,6 @@
 const { User } = require('@bee/db-models')
 
-//
-
-const assertResult = res => {
-  if (res) {
-    return res
-  }
-
-  const err = new Error('not found')
-  return Promise.reject(err)
-}
+const errorFrom = require('../helpers/error-handler-db')
 
 //
 
@@ -17,7 +8,8 @@ async function fetchUserById (id) {
   return User
     .query()
     .findById(id)
-    .then(assertResult)
+    .throwIfNotFound()
+    .catch(errorFrom)
 }
 
 //

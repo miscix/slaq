@@ -1,11 +1,12 @@
 const R = require('ramda')
+const createError = require('http-errors')
 
 const fetchWorkspaceByUri = require('./fetchWorkspaceByUri')
 
 //
 
-const throwNotAllowed = () => {
-  const err = new Error('not allowed')
+const throwForbidden = () => {
+  const err = createError(403)
   return Promise.reject(err)
 }
 
@@ -24,7 +25,7 @@ async function deleteDoc (doc) {
 async function destroyWorkspaceByUriAs (userId, uri) {
   const assertPermission = R.unless(
     hasOwner(userId),
-    throwNotAllowed
+    throwForbidden
   )
 
   return fetchWorkspaceByUri(uri)

@@ -1,27 +1,19 @@
-const R = require('ramda')
-
 const { Workspace } = require('@bee/db-models')
 
-//
-
-const throwNotFound = () => {
-  const err = new Error('not found')
-  return Promise.reject(err)
-}
-
-const assertResult = R.when(R.isNil, throwNotFound)
+const fromDbError = require('../helpers/error-handler-db')
 
 //
 
-async function fetchUserById (id) {
+async function fetchWorkspaceByUri (id) {
   return Workspace
     .query()
     .withGraphFetched('members')
     .withGraphFetched('channels')
     .findById(id)
-    .then(assertResult)
+    .throwIfNotFound()
+    .catch(fromDbError)
 }
 
 //
 
-module.exports = fetchUserById
+module.exports = fetchWorkspaceByUri

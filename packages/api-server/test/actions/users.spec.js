@@ -1,7 +1,7 @@
 const { serial: test } = require('ava')
 
 const R = require('ramda')
-const jwt = require('jsonwebtoken')
+const errors = require('http-errors')
 
 const knex = require('@bee/db-query-builder')
 
@@ -39,26 +39,24 @@ test('createUser - ok', async t => {
 test.todo('createUser - ok (sanitize input)')
 
 test.failing('createToken - fail (invalid data)', async t => {
-  const parse = R.compose(
+  const evolve = R.compose(
     R.dissoc('id'),
     R.assoc('email', 'email.com')
   )
 
-  const user = users[0]
-
-  const err = await t.throwsAsync(X.createUser(parse(user)))
-
-  t.true(err instanceof Error)
+  await t.throwsAsync(
+    X.createUser(evolve(users[0])),
+    { instanceOf: errors.UnprocessableEntity }
+  )
 })
 
 test('createToken - fail (duplicate email)', async t => {
-  const parse = R.dissoc('id')
+  const evolve = R.dissoc('id')
 
-  const user = users[0]
-
-  const err = await t.throwsAsync(X.createUser(parse(user)))
-
-  t.true(err instanceof Error)
+  await t.throwsAsync(
+    X.createUser(evolve(users[0])),
+    { instanceOf: errors.Conflict }
+  )
 })
 
 // fetchUserById
@@ -74,9 +72,10 @@ test('fetchUserById - ok', async t => {
 test('fetchUserById - fail (not found)', async t => {
   const id = 1000
 
-  const err = await t.throwsAsync(X.fetchUserById(id))
-
-  t.true(err instanceof Error)
+  await t.throwsAsync(
+    X.fetchUserById(id),
+    { instanceOf: errors.NotFound }
+  )
 })
 
 //

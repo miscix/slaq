@@ -1,6 +1,7 @@
 const R = require('ramda')
 const bcrypt = require('bcrypt')
 
+const fromDbError = require('../helpers/error-handler-db')
 const { User } = require('@bee/db-models')
 
 // settings
@@ -36,6 +37,7 @@ async function createUser (signupForm) {
   return User
     .query()
     .insertGraph(graph)
+    .catch(fromDbError)
 }
 
 //

@@ -2,6 +2,7 @@ const { serial: test } = require('ava')
 
 const R = require('ramda')
 const jwt = require('jsonwebtoken')
+const errors = require('http-errors')
 
 const knex = require('@bee/db-query-builder')
 
@@ -47,9 +48,10 @@ test('createToken - fail (wrong email)', async t => {
 
   const user = users[0]
 
-  const err = await t.throwsAsync(X.createToken(parse(user)))
-
-  t.true(err instanceof Error)
+  await t.throwsAsync(
+    X.createToken(parse(user)),
+    { instanceOf: errors.Unauthorized }
+  )
 })
 
 test('createToken - fail (wrong password)', async t => {
@@ -60,7 +62,8 @@ test('createToken - fail (wrong password)', async t => {
 
   const user = users[0]
 
-  const err = await t.throwsAsync(X.createToken(parse(user)))
-
-  t.true(err instanceof Error)
+  await t.throwsAsync(
+    X.createToken(parse(user)),
+    { instanceOf: errors.Unauthorized }
+  )
 })
