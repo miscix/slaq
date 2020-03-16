@@ -1,44 +1,8 @@
-const R = require('ramda')
 const { Router } = require('express')
 
-const bcrypt = require('bcrypt')
-
-const { User } = require('@bee/db-models')
+const X = require('../actions')
 
 //
-
-const BCRYPT_SALT_ROUNDS = 10
-
-//
-
-async function createUser (formData) {
-  const hash = await bcrypt
-    .hash(formData.password, BCRYPT_SALT_ROUNDS)
-
-  const userData = R.dissoc('password', formData)
-
-  const graph = {
-    ...userData,
-    credential: { hash }
-  }
-
-  return User
-    .query()
-    .insertGraph(graph)
-}
-
-async function fetchUser (id) {
-  return User
-    .query()
-    .findById(id)
-    .then(data => {
-      return data || Promise.reject(new Error(404))
-    })
-}
-
-async function fetchUserList () {
-  return User.query()
-}
 
 const router = Router()
 
@@ -48,26 +12,28 @@ router
       res.status(201).end()
     }
 
-    return createUser(req.body)
+    return X.createUser(req.body)
       .then(resolveCreated)
       .catch(next)
   })
+
   .get('/:id', (req, res, next) => {
     const resolveFetched = data => {
       res.json(data)
     }
 
-    return fetchUser(req.params.id)
+    return X.fetchUserById(req.params.id)
       .then(resolveFetched)
       .catch(next)
   })
+
   .get('/', (req, res, next) => {
-    const resolveFetched = items => {
+    const resolveList = items => {
       res.json({ items })
     }
 
-    return fetchUserList()
-      .then(resolveFetched)
+    return X.fetchUserList()
+      .then(resolveList)
       .catch(next)
   })
 
