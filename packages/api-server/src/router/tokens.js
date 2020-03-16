@@ -7,7 +7,7 @@ const { createToken } = require('../actions')
 const router = Router()
 
 router
-  .post('/', async (req, res, next) => {
+  .post('/tokens', async (req, res, next) => {
     const resolveCreated = token => {
       res.status(201)
       res.json({ token })

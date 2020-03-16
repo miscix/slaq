@@ -7,7 +7,7 @@ const X = require('../actions')
 const router = Router()
 
 router
-  .post('/', async (req, res, next) => {
+  .post('/users', async (req, res, next) => {
     const resolveCreated = () => {
       res.status(201).end()
     }
@@ -17,7 +17,7 @@ router
       .catch(next)
   })
 
-  .get('/:id', (req, res, next) => {
+  .get('/users/:id', (req, res, next) => {
     const resolveFetched = data => {
       res.json(data)
     }
@@ -27,7 +27,7 @@ router
       .catch(next)
   })
 
-  .get('/', (req, res, next) => {
+  .get('/users', (req, res, next) => {
     const resolveList = items => {
       res.json({ items })
     }

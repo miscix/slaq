@@ -1,14 +1,11 @@
 const { Router } = require('express')
 
-const membersRouter = require('./members')
-const channelsRouter = require('./channels')
-
-const X = require('../../actions')
+const X = require('../actions')
 
 const router = Router()
 
 router
-  .post('/', (req, res, next) => {
+  .post('/workspaces', (req, res, next) => {
     const resolveCreated = data => {
       res.status(201)
       res.json(data)
@@ -18,7 +15,7 @@ router
       .then(resolveCreated)
       .catch(next)
   })
-  .get('/:uri', (req, res, next) => {
+  .get('/workspaces/:uri', (req, res, next) => {
     const resolveOk = data => {
       res.status(200)
       res.json(data)
@@ -28,7 +25,7 @@ router
       .then(resolveOk)
       .catch(next)
   })
-  .delete('/:uri', (req, res, next) => {
+  .delete('/workspaces/:uri', (req, res, next) => {
     const resolveOk = () => {
       res.status(204).end()
     }
@@ -37,13 +34,25 @@ router
       .then(resolveOk)
       .catch(next)
   })
-  .get('/', (req, res, next) => {
+  .get('/workspaces', (req, res, next) => {
     res.status(501)
     next('not implemented')
   })
 
+// members
+
 router
-  .use('/:workspaceUri/members', membersRouter)
-  .use('/:workspaceUri/channels', channelsRouter)
+  .post('/workspaces/:workspaceId/members', (req, res, next) => {
+    res.status(501)
+    next('not implemented')
+  })
+  .delete('/workspaces/:workspaceId/members/:userId', (req, res, next) => {
+    res.status(501)
+    next('not implemented')
+  })
+  .get('/workspaces/:workspaceId/members/', (req, res, next) => {
+    res.status(501)
+    next('not implemented')
+  })
 
 module.exports = router
