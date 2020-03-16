@@ -1,10 +1,12 @@
 const { serial: test } = require('ava')
 
-const setup = require('../helpers/http-setup')
+const R = require('ramda')
 
 const knex = require('@bee/db-query-builder')
 
-// const { users } = require('@bee/assets')
+const { workspaces } = require('@bee/assets')
+
+const setup = require('../helpers/http-setup')
 
 //
 
@@ -25,13 +27,69 @@ test.afterEach.always(async t => {
 
 // workspaces
 
-test.todo('POST /workspaces - 201')
-test.todo('POST /workspaces - 401')
-test.todo('POST /workspaces - 409')
-test.todo('POST /workspaces - 422')
+test('POST /workspaces - 201', async t => {
+  const { request, user } = t.context
+
+  const form = {
+    uri: 'x-corp',
+    name: 'X Corp.'
+  }
+
+  const { statusCode, body } = await request
+    .post('workspaces', { json: form })
+
+  t.is(statusCode, 201)
+  t.is(body.uri, form.uri)
+  t.is(body.createdBy, user.id)
+})
+
+test('POST /workspaces - 401', async t => {
+  const { requestNoAuth: request } = t.context
+
+  const form = {
+    uri: 'x-corp',
+    name: 'X Corp.'
+  }
+
+  await t.throwsAsync(
+    request.post('workspaces', { json: form }),
+    { instanceOf: Error } // TODO: assert 401
+  )
+})
+
+test('POST /workspaces - 409', async t => {
+  const { request } = t.context
+
+  const parse = R.pick(['uri', 'name'])
+
+  const form = parse(workspaces[0])
+
+  await t.throwsAsync(
+    request.post('workspaces', { json: form }),
+    { instanceOf: Error } // TODO: assert 409
+  )
+})
+
+test.failing('POST /workspaces - 422', async t => {
+  const { request } = t.context
+
+  const form = {
+    uri: 'x-corp',
+    name: ''
+  }
+
+  await t.throwsAsync(
+    request.post('workspaces', { json: form }),
+    { instanceOf: Error } // TODO: assert 409
+  )
+})
+
+//
 
 test.todo('GET /workspaces - 200')
 test.todo('GET /workspaces - 401')
+
+//
 
 test.todo('GET /workspaces/:uri - 200')
 test.todo('GET /workspaces/:uri - 401')

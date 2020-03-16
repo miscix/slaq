@@ -3,12 +3,20 @@ const { Router } = require('express')
 const membersRouter = require('./members')
 const channelsRouter = require('./channels')
 
+const X = require('../../actions')
+
 const router = Router()
 
 router
   .post('/', (req, res, next) => {
-    res.status(501)
-    next('not implemented')
+    const resolveCreated = data => {
+      res.status(201)
+      res.json(data)
+    }
+
+    return X.createWorkspaceAs(req.user.id, req.body)
+      .then(resolveCreated)
+      .catch(next)
   })
   .get('/:uri', (req, res, next) => {
     res.status(501)
