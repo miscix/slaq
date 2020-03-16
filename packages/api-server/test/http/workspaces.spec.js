@@ -121,7 +121,7 @@ test('GET /workspaces/:uri - 403', async t => {
 })
 
 test('GET /workspaces/:uri - 404', async t => {
-  const { requestNoAuth: request } = t.context
+  const { request } = t.context
 
   const uri = 'xxx'
 
@@ -141,9 +141,29 @@ test.todo('HEAD /workspaces/:uri - 204')
 test.todo('HEAD /workspaces/:uri - 401')
 test.todo('HEAD /workspaces/:uri - 404')
 
-test.todo('DELETE /workspaces/:uri - 204')
+test('DELETE /workspaces/:uri - 204', async t => {
+  const { request } = t.context
+
+  const uri = workspaces[0].uri
+
+  const { statusCode } = await request
+    .delete(`workspaces/${uri}`)
+
+  t.is(statusCode, 204)
+})
+
 test.todo('DELETE /workspaces/:uri - 401')
-test.todo('DELETE /workspaces/:uri - 403')
+
+test('DELETE /workspaces/:uri - 403', async t => {
+  const { request } = t.context
+
+  const uri = workspaces[1].uri
+
+  await t.throwsAsync(
+    request.delete(`workspaces/${uri}`)
+  )
+})
+
 test.todo('DELETE /workspaces/:uri - 404')
 
 // workspace members

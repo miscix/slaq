@@ -5,7 +5,8 @@ const R = require('ramda')
 const knex = require('@bee/db-query-builder')
 
 const { users, workspaces } = require('@bee/assets')
-const { User } = require('@bee/db-models')
+
+const { Workspace } = require('@bee/db-models')
 
 const X = require('../../src/actions')
 
@@ -111,5 +112,30 @@ test('fetchWorkspaceByUriAs - fail (not allowed)', async t => {
   await t.throwsAsync(
     X.fetchWorkspaceByUriAs(userId, uri),
     { instanceOf: Error }
+  )
+})
+
+// destroyWorkspaceByUriAs
+
+test('destroyWorkspaceByUriAs - ok', async t => {
+  const userId = users[0].id
+  const uri = workspaces[0].uri
+
+  await t.notThrowsAsync(
+    X.destroyWorkspaceByUriAs(userId, uri)
+  )
+
+  await Workspace
+    .query()
+    .findById(uri)
+    .then(t.falsey)
+})
+
+test('destroyWorkspaceByUriAs - fail (not allowed)', async t => {
+  const userId = users[1].id
+  const uri = workspaces[0].uri
+
+  await t.throwsAsync(
+    X.destroyWorkspaceByUriAs(userId, uri)
   )
 })

@@ -29,8 +29,13 @@ router
       .catch(next)
   })
   .delete('/:uri', (req, res, next) => {
-    res.status(501)
-    next('not implemented')
+    const resolveOk = () => {
+      res.status(204).end()
+    }
+
+    return X.destroyWorkspaceByUriAs(req.user.id, req.params.uri)
+      .then(resolveOk)
+      .catch(next)
   })
   .get('/', (req, res, next) => {
     res.status(501)
